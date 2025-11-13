@@ -65,10 +65,24 @@ public class ProblemSolutions {
 
   public static int lastBoulder(int[] boulders) {
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
+     PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+     
+     for(int boulder : boulders){
+        maxHeap.offer(boulder);
+     }
+     while (maxHeap.size() > 1){
+
+        int first = maxHeap.poll();
+        int second = maxHeap.poll();
+
+        if(first != second){
+            maxHeap.offer(first - second);
+
+        }
+
+
+     }
+      return maxHeap.isEmpty() ? 0 : maxHeap.poll();
   }
 
 
@@ -91,12 +105,26 @@ public class ProblemSolutions {
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        HashMap<String, Integer> countMap = new HashMap<>();
 
+        for(String str : input){
+            countMap.put( str, countMap.getOrDefault(str,0)+1);
     }
+
+        ArrayList<String> duplicates = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : countMap.entrySet()){
+            if (entry.getValue()>1) {
+                duplicates.add(entry.getKey());
+                
+            }
+
+        }
+        Collections.sort(duplicates);
+        return duplicates;
+    }
+
+
+    
 
 
     /**
@@ -131,9 +159,30 @@ public class ProblemSolutions {
 
     public static ArrayList<String> pair(int[] input, int k) {
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        HashSet<Integer> seen = new HashSet<>();
+        HashSet<String> pairSet = new HashSet<>();
+        ArrayList<String> result = new ArrayList<>();
+
+        for(int num : input){
+            int complement = k - num;
+
+            if(seen.contains(complement)){
+
+                int smaller = Math.min(num, complement);
+                int larger = Math.max(num, complement);
+                String pairStr = "(" + smaller + ", " + larger +")";
+                
+
+            if(pairSet.add(pairStr)){
+                result.add(pairStr);
+
+            }
+
+            }
+            seen.add(num);
+        }
+        Collections.sort(result);
+            return result;
     }
+
 }
